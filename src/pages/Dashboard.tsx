@@ -1,41 +1,35 @@
-import {useUser} from "@clerk/clerk-react";
-import {useHabits} from "../api/habits.ts";
-
-type Habit = {
-    id: string;
-    user_id: string;
-    title: string;
-    completed: boolean;
-};
+import { useUser } from "@clerk/clerk-react";
+import { useHabits } from "../api/habits.ts";
+import HabitForm from "../components/AddHabitForm.tsx";
+import HabitTable from "../components/HabitsTable.tsx";
 
 export default function Dashboard() {
-    const {user} = useUser();
-    const userId = user?.id;
-    const {data, error} = useHabits({userId});
+	const { user } = useUser();
+	const userId = user?.id;
+	const { data: habits, isLoading } = useHabits(userId);
 
-    console.log(data);
+	console.log(habits);
 
-    return (
-        <div className="mx-auto space-y-6">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white">
-                Dashboard
-            </h2>
+	return (
+		<div className="mx-auto space-y-6">
+			<h2 className="text-3xl font-bold text-gray-900 dark:text-white">
+				Dashboard
+			</h2>
 
-            <div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-6">
-                {error && <div>Error loading habits</div>}
-                {data
-                    ? data.map((habit: Habit) => (
-                        <div key={habit.id}>
-                            {habit.title}
-                            <input
-                                type="checkbox"
-                                className="w-5 h-5 accent-yellow-500"
-                                checked={false}
-                            />
-                        </div>
-                    ))
-                    : null}
-            </div>
-        </div>
-    );
+			<div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-6">
+				{isLoading ? (
+					<p className="text-gray-600 dark:text-gray-400">Loading...</p>
+				) : habits?.length ? (
+					<HabitTable habits={habits} />
+				) : (
+					<p className="text-gray-600 dark:text-gray-400">
+						No habits found. Create one!
+					</p>
+				)}
+			</div>
+			<div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-6">
+				<HabitForm />
+			</div>
+		</div>
+	);
 }

@@ -1,11 +1,19 @@
 import { Link, Outlet } from "@tanstack/react-router";
 import { SignedIn, SignedOut, RedirectToSignIn } from "@clerk/clerk-react";
+import { useEffect } from "react";
 
 const CLASS_NAMES = {
 	link: "block px-3 py-2 rounded hover:bg-indigo-400 dark:hover:bg-gray-700 transition-colors",
 };
 
 export default function MainLayout() {
+	useEffect(() => {
+		if (window.localStorage.getItem("theme") === "dark") {
+			document.documentElement.classList.add("dark");
+		} else {
+			document.documentElement.classList.remove("dark");
+		}
+	}, []);
 	return (
 		<>
 			<SignedIn>

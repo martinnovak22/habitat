@@ -16,7 +16,6 @@ export default function Settings() {
 			localStorage.setItem("theme", "light");
 		}
 	}, [darkMode]);
-
 	return (
 		<div className="mx-auto space-y-6">
 			<h2 className="text-3xl font-bold text-gray-900 dark:text-white">
@@ -47,7 +46,13 @@ export default function Settings() {
 						type="checkbox"
 						className="w-5 h-5 accent-yellow-500"
 						checked={darkMode}
-						onChange={(e) => setDarkMode(e.target.checked)}
+						onChange={(e) => {
+							setDarkMode(e.target.checked);
+							localStorage.setItem(
+								"theme",
+								e.target.checked ? "dark" : "light",
+							);
+						}}
 					/>
 				</div>
 
