@@ -1,13 +1,22 @@
-import { useState } from "react";
 import { useUser } from "@clerk/clerk-react";
+import { useState } from "react";
+import type React from "react";
 import { useCreateHabit } from "../api/habits";
+import Toast from "../module/toast/Toast.tsx";
+import { useToast } from "../module/toast/toast.ts";
 
 export default function HabitForm() {
 	const { user } = useUser();
 	const [title, setTitle] = useState("");
-	const { mutate, isPending, isSuccess, isError, error } = useCreateHabit(
-		user?.id,
-	);
+	const { toasts, showToast } = useToast();
+	const { mutate, isPending } = useCreateHabit(user?.id, {
+		onSuccess: () => {
+			showToast("Habit added successfully", "success");
+		},
+		onError: () => {
+			showToast("Failed to add habit", "error");
+		},
+	});
 
 	const handleSubmit = (e: React.FormEvent) => {
 		e.preventDefault();
@@ -16,9 +25,8 @@ export default function HabitForm() {
 			setTitle("");
 		}
 	};
-
 	return (
-		<form onSubmit={handleSubmit} className="space-y-4">
+		<form onSubmit={handleSubmit}>
 			<div className="flex gap-2">
 				<input
 					type="text"
@@ -36,12 +44,7 @@ export default function HabitForm() {
 				</button>
 			</div>
 
-			{isError && (
-				<p className="text-red-500 text-sm">
-					Error: {(error as Error).message}
-				</p>
-			)}
-			{isSuccess && <p className="text-green-500 text-sm">Habit added!</p>}
+			<Toast toasts={toasts} />
 		</form>
 	);
 }

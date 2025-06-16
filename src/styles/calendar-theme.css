@@ -1,0 +1,25 @@
+/* calendar-theme.css */
+.react-calendar {
+    background-color: white;
+    color: black;
+}
+
+.dark .react-calendar {
+    background-color: #1f2937; /* gray-800 */
+    color: white;
+}
+
+.completed-tile {
+    background-color: #34d399 !important; /* green-400 */
+    color: white !important;
+    border-radius: 6px;
+}
+
+.uncompleted-tile {
+    opacity: 0.4;
+}
+
+.react-calendar__tile {
+    padding: 10px;
+    transition: background 0.3s ease;
+}

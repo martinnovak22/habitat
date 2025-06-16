@@ -8,7 +8,7 @@ export default function Dashboard() {
 	const userId = user?.id;
 	const { data: habits, isLoading } = useHabits(userId);
 
-	console.log(habits);
+	if (isLoading) return <p>Loading...</p>;
 
 	return (
 		<div className="mx-auto space-y-6">
@@ -17,15 +17,7 @@ export default function Dashboard() {
 			</h2>
 
 			<div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-6">
-				{isLoading ? (
-					<p className="text-gray-600 dark:text-gray-400">Loading...</p>
-				) : habits?.length ? (
-					<HabitTable habits={habits} />
-				) : (
-					<p className="text-gray-600 dark:text-gray-400">
-						No habits found. Create one!
-					</p>
-				)}
+				<HabitTable habits={habits} />
 			</div>
 			<div className="bg-white dark:bg-gray-800 shadow rounded-lg p-6 space-y-6">
 				<HabitForm />
