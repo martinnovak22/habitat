@@ -37,7 +37,7 @@ export default function HabitDetail() {
 			<Calendar
 				locale="cs-CZ"
 				calendarType="iso8601"
-				className="rounded-lg shadow calendar-container"
+				className="rounded-lg react-calendar"
 				tileClassName={({ date, view }) => {
 					if (view !== "month") return "";
 
@@ -45,13 +45,9 @@ export default function HabitDetail() {
 					if (habit.completions?.[iso]) {
 						return "completed-tile";
 					}
-
 					return "uncompleted-tile";
 				}}
 				showNeighboringMonth={false}
-				showNavigation={true}
-				prevLabel="←"
-				nextLabel="→"
 				formatMonthYear={(locale, date) =>
 					date.toLocaleDateString(locale, { month: "long", year: "numeric" })
 				}

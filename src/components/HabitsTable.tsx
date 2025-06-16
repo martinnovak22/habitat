@@ -46,7 +46,7 @@ export default function HabitTable({ habits }: HabitTableProps) {
 		const today = new Date();
 		const days = [];
 
-		for (let i = -1; i <= 5; i++) {
+		for (let i = -5; i <= 1; i++) {
 			const d = new Date(today);
 			d.setDate(today.getDate() + i);
 			days.push(formatDate(d));

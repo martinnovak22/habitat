@@ -1,25 +1,91 @@
-/* calendar-theme.css */
 .react-calendar {
-    background-color: white;
-    color: black;
+	background-color: white;
+	color: #111827;
+	border-radius: 1rem;
+	padding: 1rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+	font-family: "Inter", sans-serif;
+	transition: background 0.3s ease;
 }
 
 .dark .react-calendar {
-    background-color: #1f2937; /* gray-800 */
-    color: white;
+	background-color: #1f2937;
+	color: #f3f4f6;
+	box-shadow: 0 4px 12px rgba(255, 255, 255, 0.05);
 }
 
-.completed-tile {
-    background-color: #34d399 !important; /* green-400 */
-    color: white !important;
-    border-radius: 6px;
+/* Navigation */
+.react-calendar__navigation {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 1rem;
 }
 
-.uncompleted-tile {
-    opacity: 0.4;
+.react-calendar__navigation button {
+	background: transparent;
+	color: inherit;
+	font-weight: bold;
+	font-size: 1rem;
+	border: none;
+	cursor: pointer;
+	padding: 0.5rem;
+	border-radius: 0.5rem;
+	transition: background 0.2s ease;
 }
 
+.react-calendar__navigation button:enabled:hover,
+.react-calendar__navigation button:enabled:focus {
+	background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark .react-calendar__navigation button:enabled:hover,
+.dark .react-calendar__navigation button:enabled:focus {
+	background-color: rgba(255, 255, 255, 0.08);
+}
+
+/* Calendar Tiles */
 .react-calendar__tile {
-    padding: 10px;
-    transition: background 0.3s ease;
+	background: none;
+	border: none;
+	border-radius: 0.5rem;
+	padding: 0.6rem 0.4rem;
+	text-align: center;
+	cursor: default;
+	transition: background-color 0.2s, color 0.2s;
+}
+
+/* Disable unwanted states unless tile is manually styled */
+.react-calendar__tile:not(.completed-tile):not(.uncompleted-tile):hover,
+.react-calendar__tile:not(.completed-tile):not(.uncompleted-tile):focus,
+.react-calendar__tile--active,
+.react-calendar__tile--now {
+	background-color: transparent !important;
+	box-shadow: none !important;
+	outline: none !important;
+	color: inherit !important;
+}
+
+/* Completed */
+.completed-tile {
+	background-color: #10b981 !important;
+	color: white !important;
+	font-weight: 600;
+	box-shadow: 0 2px 4px rgba(16, 185, 129, 0.3);
+	cursor: default;
+}
+
+/* Uncompleted */
+.uncompleted-tile {
+	opacity: 0.5;
+	cursor: default;
+}
+
+/* Remove outline/focus from nav labels in month/year views */
+.react-calendar__navigation__label--active,
+.react-calendar__navigation__label:disabled {
+	background-color: transparent !important;
+	color: inherit !important;
+	box-shadow: none !important;
+	cursor: default;
 }
