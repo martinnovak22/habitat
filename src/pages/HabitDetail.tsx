@@ -3,9 +3,8 @@ import { useParams } from "@tanstack/react-router";
 import Calendar from "react-calendar";
 import { useHabitById } from "../api/habits";
 import "react-calendar/dist/Calendar.css";
-import { useEffect } from "react";
-
 import "../styles/calendar-theme.css";
+import HabitStats from "../components/HabitStats";
 
 function toLocalISOString(date: Date) {
 	const offset = date.getTimezoneOffset();
@@ -18,43 +17,38 @@ export default function HabitDetail() {
 	const { user } = useUser();
 	const { data: habit, isLoading } = useHabitById(habitId, user?.id);
 
-	useEffect(() => {
-		document.title = habit?.title ? `Habit: ${habit.title}` : "Habit Detail";
-	}, [habit]);
-
 	if (isLoading) return <p>Loading...</p>;
 	if (!habit) return <p>Habit not found</p>;
 
 	return (
-		<div className="p-4 space-y-4">
-			<h2 className="text-2xl font-bold text-gray-800 dark:text-white">
+		<div className="mx-auto space-y-6">
+			<h2 className="text-3xl font-bold text-gray-900 dark:text-white">
 				{habit.title}
 			</h2>
-			<p className="text-sm text-gray-500 dark:text-gray-400">
-				Habit ID: {habit.id}
-			</p>
+			<div className="grid grid-cols-2 mt-6 p-6 bg-white dark:bg-gray-800 rounded shadow space-y-2">
+				<HabitStats habit={habit} />
+				<Calendar
+					locale="cs-CZ"
+					calendarType="iso8601"
+					className="rounded-lg react-calendar"
+					tileClassName={({ date, view }) => {
+						if (view !== "month") return "";
 
-			<Calendar
-				locale="cs-CZ"
-				calendarType="iso8601"
-				className="rounded-lg react-calendar"
-				tileClassName={({ date, view }) => {
-					if (view !== "month") return "";
-
-					const iso = toLocalISOString(date);
-					if (habit.completions?.[iso]) {
-						return "completed-tile";
+						const iso = toLocalISOString(date);
+						if (habit.completions?.[iso]) {
+							return "completed-tile";
+						}
+						return "uncompleted-tile";
+					}}
+					showNeighboringMonth={false}
+					formatMonthYear={(locale, date) =>
+						date.toLocaleDateString(locale, { month: "long", year: "numeric" })
 					}
-					return "uncompleted-tile";
-				}}
-				showNeighboringMonth={false}
-				formatMonthYear={(locale, date) =>
-					date.toLocaleDateString(locale, { month: "long", year: "numeric" })
-				}
-				formatShortWeekday={(locale, date) =>
-					date.toLocaleDateString(locale, { weekday: "short" }).slice(0, 2)
-				}
-			/>
+					formatShortWeekday={(locale, date) =>
+						date.toLocaleDateString(locale, { weekday: "short" }).slice(0, 2)
+					}
+				/>
+			</div>
 
 			<button
 				className="mt-4 text-blue-600 dark:text-blue-400 hover:underline"
